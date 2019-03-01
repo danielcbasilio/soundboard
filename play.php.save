@@ -1,0 +1,47 @@
+<?php
+
+require 'functions.php';
+require 'vendor/autoload.php';
+
+use wapmorgan\Mp3Info\Mp3Info;
+
+$file=$_GET['file'];
+
+if(!fileExists($file)){
+	die("die, you jerk.");
+}
+
+//$audio = new Mp3Info("sounds/$file", true);
+//if($audio->duration > 10.5 && $file != "ussr.mp3" && $file !="1.Happybirthday.mp3"){
+	die("too long, you fool.");
+}
+
+// Let the filtering begin!
+
+$file=str_replace('..', '', $file);
+$file=str_replace('/', '', $file);
+$file=str_replace('\'', '\\\'', $file);
+
+// filtering done!
+
+if(!fileExists($file)){
+	die("die, you jerk.");
+}
+
+if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97'))){
+#	header('HTTP/1.0 403 Forbidden');
+	die('badIp.');
+}
+
+$forbidden = file('sounds/forbidden.txt', FILE_IGNORE_NEW_LINES);
+if(in_array(hash_file("md5", "sounds/{$file}"), $forbidden)){
+	die('forbidden.');
+}
+
+$cmd="mpg321 'sounds/{$file}' | at now & disown";
+
+echo $cmd;
+var_dump(shell_exec($cmd));
+
+
+?>
