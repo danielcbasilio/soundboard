@@ -15,7 +15,7 @@ function getSoundFiles(){
 }
 
 function insertButtons(){
-	$nsfw = file('sounds/nsfw.txt', FILE_IGNORE_NEW_LINES);
+	$nsfw = file("configurationFiles/nsfw.txt", FILE_IGNORE_NEW_LINES);
 	foreach(getSoundFiles() as $f){
 		$fname= substr($f, 0, strlen($f)-4); // 4 chars for '.mp3'
 		if(in_array($f, $nsfw)){
