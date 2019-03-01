@@ -22,11 +22,11 @@ if(!fileExists($file)){
 $cmd="ps -aux | grep mpg321 | grep sounds";
 //echo strlen(shell_exec($cmd));
 if (strlen(shell_exec($cmd)) > 110) {
-	die("die, you jerk");
+	die("alreadyPlaying");
 }
 
 $audio = new Mp3Info("sounds/$file", true);
-$durationOverwride = file("configurationFiles/durationOverwride.txt", FILE_IGNORE_NEW_LINES);
+$durationOverwride = file("configurationFiles/durationOverride.txt", FILE_IGNORE_NEW_LINES);
 if($audio->duration > 10 && !in_array(hash_file("md5", "sounds/{$file}"), $durationOverwride)){
 	die("too long, you fool");
 }
