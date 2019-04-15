@@ -33,7 +33,7 @@
 			<input type="submit" value="Submit">
 		</form>
 
-		<?php insertQueue() ?>
+		<div id = "queue"></div>
 	</div>
 <!--//mian-content-->
 <!-- copyright -->

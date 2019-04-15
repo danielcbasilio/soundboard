@@ -23,40 +23,46 @@ function fullUrl($vidId) {
     return $YT_PREFIX . $vidId;
 }
 
-function insertQueue() {
-    echo "<ol>";
+function queueJSON($code) {
+    
+    $json = array(
+        "status" => $code,
+        "items" => []
+    );
+    
     $ids = getFIFO();
-    $cnt = 0;
     foreach ($ids as $vidId) {
-        $full_url =  fullUrl($vidId);
-        
-        echo "<li>". $cnt++ . ": " . page_title($full_url) ."</li>";
-
+        $full_url = fullUrl($vidId);
+        $item = array(
+            "title" => page_title($full_url)
+        );
+        array_push($json["items"], $item);
     }
-    echo "</ol>";
+
+    return json_encode($json);
 }
 
 function getFIFO(){
     global $FIFO_DB_FILENAME;
     
+    $ids = [];
     try {
         $DBH = new PDO("sqlite:${FIFO_DB_FILENAME}");
 
         $STH = $DBH->query('SELECT * FROM dp_fifo');
 
-        $ids = [];
         while ($row = $STH->fetch(\PDO::FETCH_ASSOC)) {
             $ids[] = $row['vid_id'];
         }
         
         $DBH = NULL;
-        return $ids;
     }
     catch (PDOException $e) {
         echo $e;
     }
     
     $DBH = NULL;
+    return $ids;
 }
 
 function insertIntoFIFO($vidId) {
@@ -64,6 +70,11 @@ function insertIntoFIFO($vidId) {
 
     if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97'))){
     //	header('HTTP/1.0 403 Forbidden');
+        return;
+    }
+
+    if ($vidId == "") {
+        echo queueJSON(1);
         return;
     }
     
@@ -83,6 +94,9 @@ function insertIntoFIFO($vidId) {
     
     $cmd="php playThatShizz.php | at now & disown";
     shell_exec($cmd);
+
+    $code = 0;
+    echo queueJSON($code);
 }
 
 function popFromFIFO($vidId) {
