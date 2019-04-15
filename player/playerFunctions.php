@@ -62,10 +62,10 @@ function getFIFO(){
 function insertIntoFIFO($vidId) {
     global $FIFO_DB_FILENAME;
 
-    //if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97'))){
+    if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97'))){
     //	header('HTTP/1.0 403 Forbidden');
-    //    die("badIp");
-    //}
+        return;
+    }
     
     try {
         $DBH = new PDO("sqlite:${FIFO_DB_FILENAME}");
