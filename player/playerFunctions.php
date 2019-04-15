@@ -30,11 +30,10 @@ function queueJSON($code) {
         "items" => []
     );
     
-    $ids = getFIFO();
-    foreach ($ids as $vidId) {
-        $full_url = fullUrl($vidId);
+    $vids = getFIFO();
+    foreach ($vids as $vid) {
         $item = array(
-            "title" => page_title($full_url)
+            "title" => $vid["vidTitle"]
         );
         array_push($json["items"], $item);
     }
@@ -45,24 +44,26 @@ function queueJSON($code) {
 function getFIFO(){
     global $FIFO_DB_FILENAME;
     
-    $ids = [];
+    $vids = [];
     try {
         $DBH = new PDO("sqlite:${FIFO_DB_FILENAME}");
 
         $STH = $DBH->query('SELECT * FROM dp_fifo');
 
         while ($row = $STH->fetch(\PDO::FETCH_ASSOC)) {
-            $ids[] = $row['vid_id'];
+            $vid = array(
+                'vidId' => $row['vid_id'],
+                'vidTitle' => $row['vid_title']
+            );
+            array_push($vids, $vid);
         }
-        
-        $DBH = NULL;
     }
     catch (PDOException $e) {
         echo $e;
     }
     
     $DBH = NULL;
-    return $ids;
+    return $vids;
 }
 
 function insertIntoFIFO($vidId) {
@@ -80,9 +81,11 @@ function insertIntoFIFO($vidId) {
     
     try {
         $DBH = new PDO("sqlite:${FIFO_DB_FILENAME}");
+
+        $vidTitle = page_title(fullUrl($vidId));
         
-        $STH = $DBH->prepare('INSERT INTO dp_fifo (vid_id) VALUES (?)');
-        $STH->execute(array($vidId));
+        $STH = $DBH->prepare('INSERT INTO dp_fifo (vid_id, vid_title) VALUES (?, ?)');
+        $STH->execute(array($vidId, $vidTitle));
         
         $DBH = NULL;
     }
@@ -128,11 +131,11 @@ function playFIFO() {
     $reqs = getFIFO();
     while (sizeof($reqs)) {
 
-        $full_url = fullUrl($reqs[0]);
+        $full_url = fullUrl($reqs[0]['vidId']);
         $cmd = "youtube-dl -f \"bestaudio/worstaudio\" -o - \"${full_url}\" | mplayer -cache 1024 -";
         shell_exec($cmd);
 
-        popFromFIFO($reqs[0]);
+        popFromFIFO($reqs[0]['vidId']);
         $reqs = getFIFO();
     }
 }
