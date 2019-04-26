@@ -33,6 +33,9 @@ function refreshQueue(data) {
 
 	// Refreshing the queue on the user's screen
 	let container = document.getElementById("queue");
+	while (container.firstChild) {
+		myNode.removeChild(container.firstChild);
+	}
 	let ol = document.createElement("ol");
 	obj.items.forEach(element => {
 		let li = document.createElement("li");
