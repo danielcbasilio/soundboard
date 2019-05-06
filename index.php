@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
 <head>
-<title>IEEE UP SB Sounds</title>
+<title>IEEE UP SB Spinlock Classic</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 <meta name="keywords" content="Smooth Error Page template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web forms, Login sign up Responsive web Forms, SmartPhone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
@@ -31,6 +31,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <body>
 <!--mian-content-->
 <h1 style="font-family:'Monospace'">¯\_(ツ)_/¯</h1>
+<h1 style="font-family:'Monospace'">Spinlock Classic</h1>
 	<div class="main-wthree">
 		<?php insertButtons(); ?>
 	</div>
