@@ -25,13 +25,19 @@ if (strlen(shell_exec($cmd)) > 110) {
 	die("alreadyPlaying");
 }
 
+$busyCheckCmd="ps -aux | grep mplayer | grep bestaudio";
+if (strlen(shell_exec($busyCheckCmd)) > 200) {
+	die("alreadyPlaying");
+}
+
+
 $audio = new Mp3Info("sounds/$file", true);
 $durationOverwride = file("configurationFiles/durationOverride.txt", FILE_IGNORE_NEW_LINES);
 if($audio->duration > 10 && !in_array(hash_file("md5", "sounds/{$file}"), $durationOverwride)){
 	die("too long, you fool");
 }
 
-if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97'))){
+if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97', '127.0.0.1'))){
 //	header('HTTP/1.0 403 Forbidden');
 	die("badIp");
 }
