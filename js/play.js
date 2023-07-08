@@ -1,7 +1,7 @@
 // A $( document ).ready() block.
 $(document).ready(function () {
 	console.log("ready!");
-
+	console.log("it is actually ready now!")
 	$("body>div>button").click(function () {
 		$.ajax({
 				url: "play.php?file=" + encodeURIComponent($(this).text()) + ".mp3",
@@ -11,6 +11,7 @@ $(document).ready(function () {
 			})
 			.always(function (data) {
 //				data = data.responseText;
+				console.log(data);
 				if (data === "die, you jerk") {
 					swal("The specified file no longer exists!", "Please refresh the page!", "error", {
 						buttons: false,

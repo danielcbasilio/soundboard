@@ -29,15 +29,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
-<!--mian-content-->
+<!--main-content-->
 <h1 style="font-family:'Monospace'">¯\_(ツ)_/¯</h1>
 <h1 style="font-family:'Monospace'">Spinlock Classic</h1>
 	<div class="main-wthree">
-		<?php insertButtons(); ?>
+		<?php 
+			insertButtons(); 
+		?>
 	</div>
 	<button><a href="/playrand.php">Random</a></button>
 	<button><a href="/tts.php">TTS</a></button>
-<!--//mian-content-->
+<!--//main-content-->
 <!-- copyright -->
 	<div class="copyright-w3-agile">
 		<p> IEEE UP SB - IT Dept | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a></p>

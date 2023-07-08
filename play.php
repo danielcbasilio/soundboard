@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require 'functions.php';
 require 'vendor/autoload.php';
 
@@ -37,17 +40,17 @@ if($audio->duration > 10 && !in_array(hash_file("md5", "sounds/{$file}"), $durat
 	die("too long, you fool");
 }
 
-if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97', '127.0.0.1'))){
-//	header('HTTP/1.0 403 Forbidden');
+/*if(!in_array($_SERVER['REMOTE_ADDR'], array('192.168.111.95', '192.168.111.97', '127.0.0.1'))){
+	header('HTTP/1.0 403 Forbidden');
 	die("badIp");
-}
+}*/
 
 $forbidden = file("configurationFiles/forbidden.txt", FILE_IGNORE_NEW_LINES);
 if(in_array(hash_file("md5", "sounds/{$file}"), $forbidden)){
 	die("forbidden");
 }
 
-$cmd="mpg321 'sounds/{$file}' | at now & disown";
+$cmd = "mplayer 'sounds/{$file}'";
 
 //echo $cmd;
 //var_dump(shell_exec($cmd));
